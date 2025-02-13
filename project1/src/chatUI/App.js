@@ -3,6 +3,7 @@
 // npm i
 // npm i --save react-typing-animation
 import React, {useState, useEffect} from 'react';
+import "./App.css";
 //import Typing from 'react-typing-animation';
 
 const App = () =>{
@@ -54,6 +55,14 @@ const App = () =>{
                 MessageList에서는 메세지의 목록을 조회
                 MessageForm에서는 데이터 입력과 메세지 관리.
                 */ }
+                <MessageList
+                    messages={messages}
+                />
+
+                {/*onSendMessage 새로운 메세지가 전송될때 호출되는 props */}
+                <MessageForm onSendMessage={handleSendMessage} />
+
+                
             </div>
 
         </div>
@@ -62,6 +71,21 @@ const App = () =>{
 
 
 };
+
+const MessageList = ({messages}) =>{
+    return(
+        <div className='messages-list'>
+            {messages.map((message) =>(
+                <div className={message.isUser ? "user-message" : "ai-message"}>
+                    <p>
+                        <b>{message.isUser ? "User" : "AI"}</b> : {message.text}
+                    </p>
+                </div>
+            ))}
+        </div>
+    );
+};
+
 
 const MessageForm = ({ onSendMessage }) =>{
 

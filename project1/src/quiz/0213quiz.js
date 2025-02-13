@@ -22,3 +22,37 @@ function useCounter(initialValue = 0, { min = 0, max = 10 } = {}) {
     );
   }
   
+// 1. 입력값이 변경될 때마다 검색 결과 업데이트
+// 2. 디바운스 처리 (입력이 끝나고 500ms 후 검색)
+// 3. 로딩 상태 표시
+// 4. 검색 결과가 없을 때 메시지 표시
+// 5. 데이터는 다음의 주소에서 받아올것
+// `https://jsonplaceholder.typicode.com/posts?q=${searchTerm}`
+
+
+function SearchComponent() {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [results, setResults] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+  
+    // 여기에 코드를 작성하세요
+  
+    return (
+      <div>
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+          placeholder="검색어를 입력하세요"
+        />
+        {isLoading && <div>검색 중...</div>}
+        {!isLoading && results.length === 0 && 
+          <div>검색 결과가 없습니다</div>}
+        <ul>
+          {results.map(item => (
+            <li key={item.id}>{item.title}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  }

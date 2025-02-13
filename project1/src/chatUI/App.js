@@ -4,7 +4,9 @@
 // npm i --save react-typing-animation
 import React, {useState, useEffect} from 'react';
 import "./App.css";
-//import Typing from 'react-typing-animation';
+// react typing animation 라이브러리
+// -> 타이핑효과를 쉽게 구현할수 있도록 제공되는 라이브러리.
+import Typing from 'react-typing-animation';
 
 const App = () =>{
     
@@ -22,6 +24,10 @@ const App = () =>{
     // 현재 AI가 타이핑 하는 메세지 추적
     // null이 들어오는 이유는 AI가 처음 화면 실행됐을때부터 타이핑 메세지를
     // 추적할 이유는 없기때문. -> 타이핑 메세지가 입력됐을때
+
+    // AI가 답변할 영역을 추적하기위해 준비한 state
+    //  -> currentTypingId : 다음으로 타이핑이 필요한 메세지를 찾기위해
+    //      현재 타이핑중인 메세지를 확인하는 상태 변수.
     const [currentTypingId, setCurrentTypingId] = useState(null);
     
     
@@ -42,8 +48,16 @@ const App = () =>{
                              // 새로운 배열을 생성한후 기존에 저장했던 메세지들을 담아둠
                              // react의 객체들이 기본적으로 불변성을 띄기때문에.
             {text: message, isUser: true}, // 유저가 입력한 내용이 출력
-            {text: `당신이 입력한 메세지는 : "${message}"`, isUser:false}//ai내용출력
+            {text: `당신이 입력한 메세지는 : "${message}"`, 
+             isUser:false,
+             isTyping:true,
+             id:Date.now()}//ai내용출력
         ]);
+    };
+
+    //AI 타이핑이 종료됐을때 이 메서드를 실행.
+    const handleEndTyping = () =>{
+
     };
 
 
@@ -57,6 +71,8 @@ const App = () =>{
                 */ }
                 <MessageList
                     messages={messages}
+                    onEndTyping={handleEndTyping}
+                    currentTypingId={currentTypingId}
                 />
 
                 {/*onSendMessage 새로운 메세지가 전송될때 호출되는 props */}
@@ -77,9 +93,11 @@ const MessageList = ({messages}) =>{
         <div className='messages-list'>
             {messages.map((message) =>(
                 <div className={message.isUser ? "user-message" : "ai-message"}>
+                  <Typing speed={100} onFinishedTyping={() => onEndTyping()}>
                     <p>
                         <b>{message.isUser ? "User" : "AI"}</b> : {message.text}
                     </p>
+                  </Typing>
                 </div>
             ))}
         </div>

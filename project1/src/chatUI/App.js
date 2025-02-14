@@ -101,9 +101,12 @@ const App = () =>{
 
         //ai가 어떻게 입력했느냐 아니냐를 구분할까???????
         if(currentTypingId === null){ //
-            const nextTypingMessage = messages.find((msg) =>{
-
-            });
+            const nextTypingMessage = messages.find((msg) =>
+                !msg.isUser && msg.isTyping
+            );
+            if(nextTypingMessage){
+                setCurrentTypingId(nextTypingMessage.id);
+            }
         }
 
 

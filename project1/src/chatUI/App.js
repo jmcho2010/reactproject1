@@ -100,17 +100,35 @@ const App = () =>{
         // -> ai가 입력한 내용만 텍스트 효과를 부여
 
         //ai가 어떻게 입력했느냐 아니냐를 구분할까???????
-        if(currentTypingId === null){ //
+        if(currentTypingId === null){ // 현재 타이핑중인 메세지가 있는가 없는가를 확인
+            // 어쨌든 user는 채팅을 입력할것임.
+            // 입력한 채팅은 화면에 랜더링 되어야함.
+            // user와 ai의 채팅내용이 각자 따로따로 한번씩 불러와지는가?
+            // 같이 랜더링되기때문에
+            // 우선 user/ ai의 채팅내용을 구분하고자 처리.
+            
+            // 우선 user의 내용을 처리.
+            // messages배열(상태)에는 입력한 내용들이 들어가 있을것
+            //  -> 단순히 방금 입력한 내용만 있는것이 아니라 
+            //     이전에 입력했던 내용들도 보관하고있음.
             const nextTypingMessage = messages.find((msg) =>
+                // isUser가 false라는 얘기는 무슨뜻?
+                // isUser = false : ai
+                // isUser = true : 일반 유저.
+                // ai가 입력한 내용이면서(ai로 부터 온 메세지면서)
+                // -> 현재 타이핑중인 메세지를 찾는 조건.
+                // isuser -> false istyping -> true;
+                // ai가 현재 입력중인 라인을 찾아가서 이벤트를 부여할수 있음.
                 !msg.isUser && msg.isTyping
             );
-            if(nextTypingMessage){
+            if(nextTypingMessage){// 그렇다라면 랜더링을 한다 해도 
+                                  // 조건의 상태가 true가 아니라면 ai에 이벤트를 줄수 없음
                 setCurrentTypingId(nextTypingMessage.id);
             }
         }
 
 
-    }, [messages, currentTypingId]);
+    }, [messages, currentTypingId]); // 종속성 배열선언
 
 
     return(

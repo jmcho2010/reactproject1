@@ -94,8 +94,20 @@ const App = () =>{
 
     // 아래의 예시는 이벤트와 effect를 분리하여 처리하는 case
     useEffect(() =>{
+        // ai가 입력하는것처럼 이벤트 만들거임.
+        // ai가 입력하는이벤트는 모든 창에 적용인가?
+        // ->user가 입력한 내용은 바로 렌더링하고
+        // -> ai가 입력한 내용만 텍스트 효과를 부여
 
-    })
+        //ai가 어떻게 입력했느냐 아니냐를 구분할까???????
+        if(currentTypingId === null){ //
+            const nextTypingMessage = messages.find((msg) =>{
+
+            });
+        }
+
+
+    }, [messages, currentTypingId]);
 
 
     return(

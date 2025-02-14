@@ -57,8 +57,26 @@ const App = () =>{
 
     //AI 타이핑이 종료됐을때 이 메서드를 실행.
     const handleEndTyping = (id) =>{
-        alert(id);
+
+        // state를 활용하여 상태 업데이트를 진행.
+        // 메세지 관리
+        // id 값을 기준으로 (id를 파라미터로 받아와)
+        //  -> messages의 상태를 업데이트.
+        //  -> 상태 업데이트시에는 다음의 코드를 추가.
+        //  msg : 받아온 메세지에 대해 구분할때 map함수를 이용해서 msg 라는 단위로 나눔
+        // msg.id === id ? {...msg, isTyping:false} : msg
+
+
+        // currentTypingId값을 초기화.
+
         //alert("handleEndTyping 실행");
+        setMessages((prevMessages) =>
+            prevMessages.map((msg) =>
+              msg.id === id ? { ...msg, isTyping: false } : msg
+            )
+          );
+        setCurrentTypingId(null);
+
     };
 
 
@@ -88,29 +106,27 @@ const App = () =>{
 
 
 };
-
+                  /*타이핑 애니메이션의 적용은 ai에만 적용되야함.
+                  구분을 하는 가장 편한방법 : 데이터비교 */
 const MessageList = ({messages, onEndTyping, currentTypingId}) =>{
-    return(
+    return( 
         <div className='messages-list'>
-            {messages.map((message) =>
+            {messages.map((message, index) =>
                message.isTyping && message.id === currentTypingId ? (
-                  {/*타이핑 애니메이션의 적용은 ai에만 적용되야함.
-                  구분을 하는 가장 편한방법 : 데이터비교 */}
-                  <Typing key={message.id} speed={100} onFinishedTyping={() => onEndTyping(message.id)}>
+
+                  <Typing key={`typing-${message.id || index}`} speed={100} 
+                  onFinishedTyping={() => onEndTyping(message.id)}>
                     
-                    <div className={message.isUser ? "User" : "AI"}>
+                    <div className={message.isUser ? "user-message" : "ai-message"}>
                         {message.text}
                     </div>
-                    {/* <p>
-                        <b>{message.isUser ? "User" : "AI"}</b> : {message.text}
-                    </p> */}
                   </Typing>
-               ): (
-                  <div key={message.id} className={message.isUser ? "user-message" : "ai-message"}>
+               ) : (
+                  <div key={`message-${message.id || index}`} 
+                  className={message.isUser ? "user-message" : "ai-message"}>
                     {message.text}
                   </div>
                     )
-
             )}
         </div>
     );

@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './chatUI/App.js';
+//import App from './chatUI/App.js';
 //import App from './chatUI/ReactTyping.js';
+import App from './chatUI/useEffectReview.js'
 import reportWebVitals from './reportWebVitals';
 
 

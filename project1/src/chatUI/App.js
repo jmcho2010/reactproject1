@@ -56,8 +56,9 @@ const App = () =>{
     };
 
     //AI 타이핑이 종료됐을때 이 메서드를 실행.
-    const handleEndTyping = () =>{
-
+    const handleEndTyping = (id) =>{
+        alert(id);
+        //alert("handleEndTyping 실행");
     };
 
 
@@ -88,18 +89,29 @@ const App = () =>{
 
 };
 
-const MessageList = ({messages}) =>{
+const MessageList = ({messages, onEndTyping, currentTypingId}) =>{
     return(
         <div className='messages-list'>
-            {messages.map((message) =>(
-                <div className={message.isUser ? "user-message" : "ai-message"}>
-                  <Typing speed={100} onFinishedTyping={() => onEndTyping()}>
-                    <p>
+            {messages.map((message) =>
+               message.isTyping && message.id === currentTypingId ? (
+                  {/*타이핑 애니메이션의 적용은 ai에만 적용되야함.
+                  구분을 하는 가장 편한방법 : 데이터비교 */}
+                  <Typing key={message.id} speed={100} onFinishedTyping={() => onEndTyping(message.id)}>
+                    
+                    <div className={message.isUser ? "User" : "AI"}>
+                        {message.text}
+                    </div>
+                    {/* <p>
                         <b>{message.isUser ? "User" : "AI"}</b> : {message.text}
-                    </p>
+                    </p> */}
                   </Typing>
-                </div>
-            ))}
+               ): (
+                  <div key={message.id} className={message.isUser ? "user-message" : "ai-message"}>
+                    {message.text}
+                  </div>
+                    )
+
+            )}
         </div>
     );
 };
